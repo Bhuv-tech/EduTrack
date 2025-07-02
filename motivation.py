@@ -40,10 +40,17 @@ def motivation_booster():
         st.write(f"\n💬 Motivation Quote: {quote}\n")
         st.success(f"Motivation score: {score}/10")
         st.info(f"{quote}")
-        # Store answer in session state
+
+        # Store score in session state for analysis/results
+        st.session_state["motivation_score"] = score * 10  # out of 100
         st.session_state["motivation_answer"] = feeling
-        st.session_state["motivation_score"] = score * 10  # If score is out of 10, multiply by 10 to get out of 100
-        return score, quote
+
+        return score * 10, quote  # Return score out of 100 for consistency
+
+    # If not submitted, return the last score from session state (if any)
+    score = st.session_state.get("motivation_score", 0)
+    quote = ""
+    return score, quote
 
 if __name__ == "__main__":
     motivation_booster()

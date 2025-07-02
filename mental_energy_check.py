@@ -75,6 +75,9 @@ def mental_energy():
         }
 
         return mental_score
+    
+    # If not submitted, return the last score from session state (if any)
+    return st.session_state.get("sleep_score", 0)
 
 if __name__ == "__main__":
     mental_energy()

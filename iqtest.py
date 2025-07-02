@@ -67,8 +67,10 @@ def iq_test():
 
             return percent, level
         
-
-
+     # If not submitted, return the last score from session state (if any)
+    percent = st.session_state.get("iq_score", 0)
+    level = st.session_state.get("iq_level", "Not attempted")
+    return percent, level
 
 
 if __name__ == "__main__":

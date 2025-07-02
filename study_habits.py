@@ -26,15 +26,19 @@ def study_habits():
             st.write("📉 Oops, social media seems to be eating a lot of your time.")
             efficiency -= 10
 
-        st.subheader(f"📈 Your Study Efficiency: {max(efficiency, 0)}%")
-        st.session_state["study_score"] = max(efficiency, 0)  # efficiency should be out of 100
-        return max(efficiency, 0)
-    # After collecting answers in study_habits()
-    st.session_state["study_habits_answers"] = {
-       "focus_hours": focus_hours,
-       "distracted": distracted,
-       "social_media_time": social_media_time   
-    }
+        efficiency = max(efficiency, 0)
+        st.subheader(f"📈 Your Study Efficiency: {efficiency}%")
+        st.session_state["study_score"] = efficiency  # efficiency should be out of 100
+        st.session_state["study_habits_answers"] = {
+            "focus_hours": focus_hours,
+            "distracted": distracted,
+            "social_media_time": social_media_time   
+        }
+        return efficiency
+
+    # If not submitted, return the last score from session state (if any)
+    return st.session_state.get("study_score", 0)
+
 if __name__ == "__main__":
     study_habits()
     # This is for testing purposes, you can remove it when integrating with the main app

@@ -3,27 +3,32 @@ from iqtest import iq_test
 from study_habits import study_habits
 from mental_energy_check import mental_energy
 from motivation import motivation_booster
+from analysis import analysis
 
 def run_all():
     st.write("🧠 EduTrack - Student Wellness Analyzer\n")
 
-    iq_score = iq_test()
-    study_score = study_habits()
-    sleep_score = mental_energy()
-    motivation_score, _ = motivation_booster()
+    iq_result = iq_test() or (0, "")
+    study_result = study_habits() or 0
+    sleep_result = mental_energy() or 0
+    motivation_result = motivation_booster() or (0, "")
 
-    # Combine all to calculate final score
-    final_score = (iq_score + study_score + sleep_score + (motivation_score * 10)) / 4
+    iq_score = iq_result[0] if isinstance(iq_result, tuple) else iq_result
+    study_score = study_result[0] if isinstance(study_result, tuple) else study_result
+    sleep_score = sleep_result[0] if isinstance(sleep_result, tuple) else sleep_result
+    motivation_score = motivation_result[0] if isinstance(motivation_result, tuple) else motivation_result
 
-    st.write("🎓 Final Wellness Score:", f"{final_score:.2f}%")
+    final_score = (iq_score + study_score + sleep_score + motivation_score) / 4
+
+    st.subheader(f"🧠 Final Wellness Score: {final_score:.2f}")
+    st.write("Here's how you did:")
     if final_score >= 80:
-        st.balloons()
-        st.write("🌟 You're doing great! Stay consistent.")
+        st.success("🌟 You're doing great! Stay consistent.")
     elif final_score >= 60:
-        st.write("💪 Good job! You can push a little more.")
+        st.info("💪 Good job! You can push a little more.")
     else:
-        st.write("🌱 Keep going. You're growing, and that matters.")
+        st.warning("🌱 Keep going. You're growing, and that matters.")
+    
+    analysis()
 
-if __name__ == "__main__":
-    result = run_all()
-    st.write(result)
+    return iq_score, study_score, sleep_score, motivation_score, final_score
